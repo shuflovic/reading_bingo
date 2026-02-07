@@ -1,0 +1,379 @@
+        /* --- CSS Variables & Theming --- */
+        :root {
+            /* Light Mode (Default) */
+            --bg-color: #fafafa;
+            --card-bg: #ffffff;
+            --text-main: #111111;
+            --text-muted: #888888;
+            --border-color: #eaeaea;
+            --accent-primary: #2c3e50;
+            
+            --shadow-soft: 0 10px 40px rgba(0,0,0,0.04);
+            --shadow-float: 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        /* Dark Mode Override */
+        body.dark-mode {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --border-color: #333333;
+            --accent-primary: #ffffff;
+            
+            --shadow-soft: 0 10px 40px rgba(0,0,0,0.3);
+            --shadow-float: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        #icon-moon {
+            display: none;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 20px;
+            width: 100%;
+            position: relative;
+        }
+
+        /* --- Header & Toggle --- */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            max-width: 600px;
+            width: 100%;
+            position: relative; /* Context for toggle button */
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 400;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        .subtitle {
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        /* Toggle Button Styling */
+        .theme-toggle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--card-bg);
+            border-color: var(--text-muted);
+            transform: rotate(15deg);
+        }
+
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* --- The Art Card --- */
+        .art-frame {
+            width: 100%;
+            max-width: 500px;
+            background: var(--card-bg);
+            padding: 2px;
+            border-radius: 2px;
+            box-shadow: var(--shadow-soft);
+            position: relative;
+            transition: background-color 0.3s ease;
+        }
+
+        .bingo-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            gap: 1px;
+            background-color: var(--border-color);
+            border: 1px solid var(--border-color);
+            aspect-ratio: 1 / 1;
+        }
+
+        .bingo-cell {
+            background-color: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.7rem;
+            padding: 10px 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            position: relative;
+            color: var(--text-main);
+            line-height: 1.4;
+            aspect-ratio: 1 / 1; /* Add this line */
+            overflow: hidden; /* Add this to prevent text overflow */
+        }
+
+        .bingo-cell:hover {
+            background-color: var(--bg-color); /* Slightly distinct from card bg */
+        }
+
+        /* Marked State */
+        .bingo-cell.marked {
+            background-color: var(--bg-color);
+            position: relative;
+            opacity: 0.6;
+        }
+        
+        .bingo-cell.marked span {
+            text-decoration: line-through;
+            text-decoration-color: var(--text-muted);
+        }
+        
+        .bingo-cell.marked::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background-color: var(--text-main);
+            border-radius: 50%;
+            top: 8px;
+            right: 8px;
+        }
+
+        .bingo-cell.free-space {
+            background-color: var(--text-main); /* Inverted contrast */
+            color: var(--bg-color);
+            font-style: italic;
+        }
+
+        .bingo-cell.winner {
+            background-color: var(--text-main);
+            color: var(--bg-color);
+            opacity: 1;
+        }
+        
+        .bingo-cell.winner span {
+            text-decoration: none;
+        }
+
+        /* --- Bottom Part --- */
+        .bottom-bar {
+            width: 100%;
+            max-width: 600px;
+            margin-top: 30px;
+            padding: 0 10px 10px 10px;
+        }
+
+        .status-pill {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 16px 20px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-float);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+        
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .status-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .status-count {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--text-main);
+            border-radius: 4px;
+            transition: width 0.4s ease;
+            width: 4%;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        button.control-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-main);
+            padding-bottom: 4px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        button.control-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: var(--text-main);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+
+        button.control-btn:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        
+        button.control-btn.share-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        button.control-btn.share-btn svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .site-footer {
+            text-align: center;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .site-footer p {
+            color: var(--text-muted);
+            font-size: 0.65rem;
+        }
+
+        .site-footer a:hover {
+            color: var(--text-main);
+        }
+
+        @media (max-width: 600px) {
+            .bottom-bar {
+                position: sticky;
+                bottom: 0;
+                background: var(--bg-color);
+                -webkit-backdrop-filter: blur();
+                backdrop-filter: blur(10px);
+                margin-top: auto;
+                padding-top: 10px;
+                border-top: 1px solid var(--border-color);
+                z-index: 100;
+            }
+            h1 { font-size: 2.5rem; }
+        }
+
+        /* --- Toast --- */
+        #toast {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background-color: var(--text-main);
+            color: var(--bg-color);
+            padding: 10px 24px;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            z-index: 200;
+            letter-spacing: 0.5px;
+        }
+
+        #toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* --- Canvas --- */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
