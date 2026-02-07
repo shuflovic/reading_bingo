@@ -308,7 +308,7 @@ function shareProgress() {
         });
     }
         
-    message += `\nshuflovic.github.io/bingo-reading-cart`;
+    message += `\nshuflovic.github.io/reading_bingo`;
     
     if (navigator.share) {
         navigator.share({
